@@ -1,0 +1,11 @@
+
+# Ignorer l'environnement virtuel
+venv_softdesk
+# Ignorer les fishers Systèmes
+DS_store
+
+# Ignorer demoapi 
+demoapi
+
+# Ignorer la DB
+db.sqlite3
