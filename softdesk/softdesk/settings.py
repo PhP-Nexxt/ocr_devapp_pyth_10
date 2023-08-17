@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "api_auth",
     "api_softdesk",
+    "rest_framework", #Application Django qu'il faut installer dans le settings
 ]
 
 MIDDLEWARE = [
