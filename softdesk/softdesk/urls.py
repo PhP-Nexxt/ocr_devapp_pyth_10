@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("api_auth.urls")),
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),#Obtenir les token
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'), #obtient un nouveau token si expiré
+    path("api/", include("api_softdesk.urls")),
 ]

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     "api_auth",
     "api_softdesk",
     "rest_framework", #Application Django qu'il faut installer dans le settings
+    'rest_framework_simplejwt',# Token
 ]
 
 MIDDLEWARE = [
@@ -119,3 +121,17 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# https://www.freecodecamp.org/news/how-to-use-jwt-and-django-rest-framework-to-get-tokens/ > Jwt Guide Utilisation
+# Ajout djangorestframework_simplejwt (Token auth)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# Time out (5 mn avec le token et 1 jour avec le refresh)
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
