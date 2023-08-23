@@ -22,3 +22,37 @@ class Project(models.Model):
 class Contributor(models.Model):
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
+    # Il ne peut pas avoir 2 fois le meme contributeur sur un projet
+    class Meta:
+        unique_together=("project", "user")
+        
+    
+class Issue(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    assign_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assign_user")
+    
+    # Choix de la priorité
+    PRIORITY_CHOICE = (
+        ("law", "law"),
+        ("medium", "medium"),
+        ("hight", "hight"),
+    )
+    priority = models.CharField(max_length=10, choices = PRIORITY_CHOICE)
+    
+    # Choix de la balise
+    TAG_CHOICE = (
+        ("bug", "bug"),
+        ("feature", "feature"),
+        ("task", "task"),
+    )
+    tag = models.CharField(max_length=10, choices = TAG_CHOICE)
+    
+    STATUS_CHOICE = (
+        ("to_do", "to_do"),
+        ("in_progress", "in_progress"),
+        ("finished", "finished"),
+    )
+    status = models.CharField(max_length=20, choices = STATUS_CHOICE, default="to_do")
+    project = models.ForeignKey(Project,on_delete=models.CASCADE)
+    author = models.ForeignKey(User,on_delete=models.CASCADE, related_name="author")
