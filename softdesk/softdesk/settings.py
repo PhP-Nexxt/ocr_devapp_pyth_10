@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "api_auth",
     "api_softdesk",
     "rest_framework", #Application Django qu'il faut installer dans le settings
-    'rest_framework_simplejwt',# Token
+    "rest_framework_simplejwt",# Token
 ]
 
 MIDDLEWARE = [
@@ -92,7 +92,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},

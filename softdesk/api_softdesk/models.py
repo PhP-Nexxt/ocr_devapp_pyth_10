@@ -1,3 +1,4 @@
+import uuid # Generer un "Universally Unique Identifier (UUID)"
 from django.db import models
 from api_auth.models import User
 
@@ -18,6 +19,9 @@ class Project(models.Model):
     description = models.TextField()
     type = models.CharField(max_length=10, choices = TYPE_CHOICE)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
+    
+    def __str__(self): # Creation d'un representant en utilisant le titre (et non l'objet)
+        return self.title
     
 class Contributor(models.Model):
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
@@ -56,3 +60,13 @@ class Issue(models.Model):
     status = models.CharField(max_length=20, choices = STATUS_CHOICE, default="to_do")
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
     author = models.ForeignKey(User,on_delete=models.CASCADE, related_name="author")
+    
+    def __str__(self): # Creation d'un representant en utilisant le titre (et non l'objet)
+        return self.title
+   
+class Comment(models.Model):
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    description = models.TextField()
+    uid = models.CharField(max_length=100, default=str(uuid.uuid4())) # Appel uuid v4 exadecimal 32 caracteres)
+    author = models.ForeignKey(User,on_delete=models.CASCADE) # Lien avec author
+        
