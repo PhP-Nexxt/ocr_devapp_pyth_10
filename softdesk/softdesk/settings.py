@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "api_auth",
     "api_softdesk",
     "rest_framework", #Application Django qu'il faut installer dans le settings
-    "rest_framework_simplejwt",# Token
+    "rest_framework_simplejwt", # Token
 ]
 
 MIDDLEWARE = [
@@ -132,6 +132,6 @@ REST_FRAMEWORK = {
 
 # Time out (5 mn avec le token et 1 jour avec le refresh)
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
