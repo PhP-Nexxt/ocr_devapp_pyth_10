@@ -132,6 +132,6 @@ REST_FRAMEWORK = {
 
 # Time out (5 mn avec le token et 1 jour avec le refresh)
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }

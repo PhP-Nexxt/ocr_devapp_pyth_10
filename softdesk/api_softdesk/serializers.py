@@ -11,6 +11,7 @@ class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
         fields = ["title","description", "assign_user", "priority", "tag", "status", "project", "author", "id"]
+        extra_kwargs = {'author': {'read_only': True}} # Mettre le champs author en lecture seule(afin que celui-ci ne puisse etre modifié via un post)
         
 class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,5 +22,5 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ["issue", "description", "uid", "author", "id"]
-        extra_kwargs = {'uid': {'read_only': True}} # Mettre le champs uid en lecture seule
+        extra_kwargs = {'uid': {'read_only': True},'author':{'read_only': True}} # Mettre le champs uid et author en lecture seule
         
