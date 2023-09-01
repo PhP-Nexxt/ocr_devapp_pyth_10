@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 from api_softdesk.models import Project, Issue, Contributor, Comment
 from api_softdesk.serializers import ProjectSerializer, IssueSerializer, ContributorSerializer, CommentSerializer
-from api_softdesk.permissions import AuthorPermission # Import de la class concerné
+from api_softdesk.permissions import AuthorPermission, ContributorPermission # Import de la class concerné
 
 # Create your views here.
 
@@ -21,7 +21,7 @@ class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
     
-    permission_classes=[IsAuthenticated] # Indique à api que pas acces sans authentification
+    permission_classes=[IsAuthenticated, ContributorPermission] # Indique à api que pas acces sans authentification
     def perform_create(self, serializer): 
        serializer.save(author=self.request.user) # On récupere uniquement user de la cession en cours (authentifié)
     
@@ -36,7 +36,7 @@ class ContributorViewSet(viewsets.ModelViewSet): # ici pas de champs author donc
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes=[IsAuthenticated] # Indique à api que pas acces sans authentification
+    permission_classes=[IsAuthenticated, AuthorPermission] # Indique à api que pas acces sans authentification et il faut etre l'auteur)
     def perform_create(self, serializer): 
        serializer.save(author=self.request.user) # On récupere uniquement user de la cession en cours (authentifié)
     
