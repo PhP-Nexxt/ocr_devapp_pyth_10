@@ -7,7 +7,7 @@ from api_softdesk.permissions import AuthorPermission, ContributorPermission # I
 # Create your views here.
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
+    
     serializer_class = ProjectSerializer
     
     permission_classes=[IsAuthenticated, AuthorPermission] # Indique à api que pas acces sans authentification et avec le bon auteur
@@ -17,11 +17,15 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer): # On recupere uniquement user de la cession en cours (authentifié)
        serializer.save(author=self.request.user)
 
+    def get_queryset(self):
+        queryset = Project.objects.filter(author=self.request.user)
+        return queryset
+   
 class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
     
-    permission_classes=[IsAuthenticated, ContributorPermission] # Indique à api que pas acces sans authentification
+    permission_classes=[IsAuthenticated, ContributorPermission, AuthorPermission] # Indique à api que pas acces sans authentification
     def perform_create(self, serializer): 
        serializer.save(author=self.request.user) # On récupere uniquement user de la cession en cours (authentifié)
     
