@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission #class de base de permissions
-from api_softdesk.models import Project
+from api_softdesk.models import Project, Issue
 
 
 class AuthorPermission(BasePermission): # Les variables afferentes portent le même nom dans model.py = facilite les permissions)
@@ -11,7 +11,7 @@ class AuthorPermission(BasePermission): # Les variables afferentes portent le m�
         else:
             return request.user == obj.author # Methodes authorisé uniquement pour l'auteur (PUT, PATCH, DELETE)
         
-class ContributorPermission(BasePermission):
+class ContributorIssuePermission(BasePermission):
     
     """
     def has_object_permission(self, request, view, obj):# obj represente un objet issue
@@ -25,7 +25,6 @@ class ContributorPermission(BasePermission):
     
     def has_permission(self, request, view):
         
-        
         if request.method == "POST":
             print(request.data)
             project_id = request.data.get("project")
@@ -33,6 +32,35 @@ class ContributorPermission(BasePermission):
             # contributors = project.contributor_set.all().values_list("user", flat=True) # On recupere tous les contributeurs associés au projet dans une liste
             if project:
                 is_contributor = project.contributor_set.filter(user=request.user).exists() # Verifie si l'utilisateur fait partie des contributeurs
+                if is_contributor or project.author==request.user: # Contributeur ou auteur
+                    return True
+            return False
+        else:
+            return True
+        
+class ContributorCommentPermission(BasePermission):
+    
+    """
+    def has_object_permission(self, request, view, obj):# obj represente un objet issue
+        project = obj.project #On associe l'objet project associé à l'issue
+        contributors = project.contributor_set.all() # On recupere tous les contibuteurs associés au projet
+        if request.method == "POST":
+            return False
+        else:
+            return True
+    """
+    
+    def has_permission(self, request, view):
+        
+        if request.method == "POST":
+            print(request.data)
+            issue_id = request.data.get("issue")
+            issue = Issue.objects.filter(id=issue_id).first() # On récupere un issue a partir de son ID en prenant le premier éléments
+            # contributors = project.contributor_set.all().values_list("user", flat=True) # On recupere tous les contributeurs associés au projet dans une liste
+            if issue:
+                is_contributor = issue.project.contributor_set.filter(user=request.user).exists() # Verifie si l'utilisateur fait partie des contributeurs
+                if is_contributor or issue.project.author==request.user: # Si autheur ou contributeur True
+                    return True
             return False
         else:
             return True
