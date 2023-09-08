@@ -1,11 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 from rest_framework import viewsets, mixins
+from rest_framework.exceptions import PermissionDenied
 from api_auth.models import User
-from api_auth.serializers import UserSerializer
+from api_auth.serializers import UserSerializer, UserDetailSerializer
 
 # Create your views here.
 
-class UserViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet): # mixin limite au actions que l'on souhaite 
+class UserViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet): # mixin limite au actions que l'on souhaite 
     queryset = User.objects.all()
     serializer_class = UserSerializer
     
@@ -14,3 +16,9 @@ class UserViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.Gener
         instance.set_password(serializer.validated_data["password"])
         instance.save()
 
+    def retrieve(self, request, pk=None ): #user by ID
+        user = get_object_or_404(self.queryset, pk=pk)
+        if not user.can_data_be_shared:
+            raise PermissionDenied(detail="User don't share his-her data")
+        serializer = UserDetailSerializer(user)
+        return Response(serializer.data)
