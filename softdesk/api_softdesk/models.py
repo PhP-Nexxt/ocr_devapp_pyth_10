@@ -11,7 +11,7 @@ class Project(models.Model):
         ("back-end", "back-end"),
         ("front-end", "front-end"),
         ("iOS", "iOS"),
-        ("Andoid", "Android"),
+        ("Android", "Android"),
     )
     title = models.CharField(max_length=200)
     description = models.TextField()

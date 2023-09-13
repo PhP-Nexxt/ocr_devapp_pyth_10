@@ -38,17 +38,8 @@ class ContributorIssuePermission(BasePermission):
         else:
             return True
         
+
 class ContributorCommentPermission(BasePermission):
-    
-    """
-    def has_object_permission(self, request, view, obj):# obj represente un objet issue
-        project = obj.project #On associe l'objet project associé à l'issue
-        contributors = project.contributor_set.all() # On recupere tous les contibuteurs associés au projet
-        if request.method == "POST":
-            return False
-        else:
-            return True
-    """
     
     def has_permission(self, request, view):
         
@@ -64,7 +55,25 @@ class ContributorCommentPermission(BasePermission):
             return False
         else:
             return True
+        
+class ContributorPermission(BasePermission):
+    
+    def has_permission(self, request, view):
+        
+        C_METHOD = ["POST", "DELETE"] # Seul author ou contributor autorise2 sur les requetes POST et DELETE
+        if request.method in ["PUT", "PATCH"]:
+            return False
+        elif request.method in C_METHOD:
+            project_id = request.data.get("project")
+            project = Project.objects.filter(id=project_id).first() # On récupere un projet a partir de son ID en prenant le premier éléments
+            if project:
+                if project.author==request.user: # Si autheur ou contributeur True
+                    return True
+            return False
+        else:
+            return True
       
+    
         
         
 

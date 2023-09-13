@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 from api_softdesk.models import Project, Issue, Contributor, Comment
 from api_softdesk.serializers import ProjectSerializer, IssueSerializer, ContributorSerializer, CommentSerializer
-from api_softdesk.permissions import AuthorPermission, ContributorIssuePermission, ContributorCommentPermission # Import de la class concerné
+from api_softdesk.permissions import AuthorPermission, ContributorIssuePermission, ContributorCommentPermission, ContributorPermission # Import de la class concerné
 from django.db.models import Q #Queryset qui permet de former des requetes
 
 # Create your views here.
@@ -40,7 +40,11 @@ class IssueViewSet(viewsets.ModelViewSet):
 class ContributorViewSet(viewsets.ModelViewSet): # ici pas de champs author donc pas besoin de recuperer la cession en cours
     queryset = Contributor.objects.all()
     serializer_class = ContributorSerializer
-    permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated, ContributorPermission]
+    
+    def get_queryset(self):
+        queryset = Contributor.objects.filter(Q(project__author=self.request.user) |Q(user=self.request.user)) # Acces par l'auteur ou>| le contributeur au projet
+        return queryset
     
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
