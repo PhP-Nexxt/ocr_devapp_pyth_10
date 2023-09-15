@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 from api_softdesk.models import Project, Issue, Contributor, Comment
-from api_softdesk.serializers import ProjectSerializer, IssueSerializer, ContributorSerializer, CommentSerializer
+from api_softdesk.serializers import ProjectSerializer, IssueSerializer, ContributorSerializer, CommentSerializer, IssueListSerializer
 from api_softdesk.permissions import AuthorPermission, ContributorIssuePermission, ContributorCommentPermission, ContributorPermission # Import de la class concerné
 from django.db.models import Q #Queryset qui permet de former des requetes
 
@@ -33,9 +33,16 @@ class IssueViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer): # On recupere uniquement user de la cession en cours (authentifié)
        serializer.save(author=self.request.user)
       
-    def get_queryset(self):
-        queryset = Issue.objects.filter(Q(project__author=self.request.user) |Q(project__contributor__user=self.request.user)) # Acces par l'auteur ou>| le contributeur au projet
-        return queryset
+    def get_queryset(self): # select_related = green code > On appel la requete en une fois
+        queryset = Issue.objects.select_related("project").filter(Q(project__author=self.request.user) |Q(project__contributor__user=self.request.user)) # Acces par l'auteur ou>| le contributeur au projet
+        return queryset 
+     
+    def get_serializer_class(self): # ici on choisi le serializer selon ce que l'on vaut faire selon l'action
+       if self.action in ["list", "retrieve"]: # Ici on verifie si l'action récuperé est une list(de tous les eléments) un retrieve(detail d'un elément)
+          return IssueListSerializer # Ici on envoie la liste 
+       else:
+          return IssueSerializer
+        
     
 class ContributorViewSet(viewsets.ModelViewSet): # ici pas de champs author donc pas besoin de recuperer la cession en cours
     queryset = Contributor.objects.all()

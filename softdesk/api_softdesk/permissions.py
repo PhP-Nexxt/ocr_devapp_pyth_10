@@ -13,16 +13,6 @@ class AuthorPermission(BasePermission): # Les variables afferentes portent le m�
         
 class ContributorIssuePermission(BasePermission):
     
-    """
-    def has_object_permission(self, request, view, obj):# obj represente un objet issue
-        project = obj.project #On associe l'objet project associé à l'issue
-        contributors = project.contributor_set.all() # On recupere tous les contibuteurs associés au projet
-        if request.method == "POST":
-            return False
-        else:
-            return True
-    """
-    
     def has_permission(self, request, view):
         
         if request.method == "POST":
@@ -38,7 +28,6 @@ class ContributorIssuePermission(BasePermission):
         else:
             return True
         
-
 class ContributorCommentPermission(BasePermission):
     
     def has_permission(self, request, view):

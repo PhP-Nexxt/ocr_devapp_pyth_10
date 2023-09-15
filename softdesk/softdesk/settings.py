@@ -128,6 +128,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20 # Greencode affichange des 20 premieres valeurs
 }
 
 # Time out (60 mn avec le token et 1 jour avec le refresh)

@@ -66,5 +66,4 @@ class Comment(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     description = models.TextField()
     uid = models.CharField(max_length=100, default=str(uuid.uuid4())) # Appel uuid v4 exadecimal 32 caracteres)
-    author = models.ForeignKey(User,on_delete=models.CASCADE) # Lien avec author
-        
+    author = models.ForeignKey(User,on_delete=models.CASCADE) # Lien avec author 
