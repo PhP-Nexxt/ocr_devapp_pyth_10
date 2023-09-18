@@ -60,7 +60,7 @@ Mise en place de la pagination
 
 # Installation & lancement :
 
-Installer Python en version 3.8.8 Lancez un terminal et placez vous dans le dossier de votre choix puis clonez le repository: git clone `https://github.com/PhP-Nexxt/ocr_devapp_pyth_10`
+Installer Python en version 3.8.8 Lancez un terminal et placez vous dans le dossier de votre choix puis clonez le repository: `git clone https://github.com/PhP-Nexxt/ocr_devapp_pyth_10`
 
 Placez vous dans le dossier ocr_devapp_pyth_10, puis créez un environnement virtuel:
 
