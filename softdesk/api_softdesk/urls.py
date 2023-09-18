@@ -11,6 +11,5 @@ router.register(r'contributor', ContributorViewSet)
 router.register(r'comment', CommentViewSet)
 
 urlpatterns = [
-    path("", include(router.urls)),
-    
+    path("", include(router.urls)), 
 ]

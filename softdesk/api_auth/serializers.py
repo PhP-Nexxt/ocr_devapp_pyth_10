@@ -5,7 +5,7 @@ class UserSerializer(serializers.ModelSerializer):
     # age = serializers.IntegerField(min_value=15) # Age min pour inscription = 15 ans
     class Meta:
         model = User
-        fields = ["username","password", "first_name", "last_name", "age","can_be_contacted", "can_data_be_shared", "id" ]
+        fields = ["username","password", "first_name", "last_name", "age","can_be_contacted", "can_data_be_shared", "id"]
         extra_kwargs = {'password': {'write_only': True},
                         'last_name': {'write_only': True},
                         'first_name': {'write_only': True},
@@ -18,5 +18,5 @@ class UserDetailSerializer(serializers.ModelSerializer):
     age = serializers.IntegerField(min_value=15) # Age min pour inscription = 15 ans
     class Meta:
         model = User
-        fields = ["username","password", "first_name", "last_name", "age","can_be_contacted", "can_data_be_shared", "id" ]
+        fields = ["username","password", "first_name", "last_name", "age","can_be_contacted", "can_data_be_shared", "id", "date_joined" ]
         extra_kwargs = {'password': {'write_only': True}} #En ecriture uniquement (pas affichage du PW) - extra_kwargs dictionnaire de serializer

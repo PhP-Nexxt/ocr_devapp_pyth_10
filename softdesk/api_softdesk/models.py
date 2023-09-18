@@ -17,14 +17,18 @@ class Project(models.Model):
     description = models.TextField()
     type = models.CharField(max_length=10, choices = TYPE_CHOICE)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
+    created_time = models.DateTimeField(auto_now_add=True) #Horodatage
     
     def __str__(self): # Creation d'un representant en utilisant le titre (et non l'objet)
         return self.title
+    
+    
     
 class Contributor(models.Model):
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     # Il ne peut pas avoir 2 fois le meme contributeur sur un projet
+    created_time = models.DateTimeField(auto_now_add=True) #Horodatage
     class Meta:
         unique_together=("project", "user")
         
@@ -33,6 +37,7 @@ class Issue(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     assign_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assign_user")
+    created_time = models.DateTimeField(auto_now_add=True) #Horodatage
     
     # Choix de la priorité
     PRIORITY_CHOICE = (
@@ -67,3 +72,4 @@ class Comment(models.Model):
     description = models.TextField()
     uid = models.CharField(max_length=100, default=str(uuid.uuid4())) # Appel uuid v4 exadecimal 32 caracteres)
     author = models.ForeignKey(User,on_delete=models.CASCADE) # Lien avec author 
+    created_time = models.DateTimeField(auto_now_add=True) #Horodatage
