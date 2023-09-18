@@ -74,4 +74,4 @@ Puis placez vous à la racine du projet (là ou se trouve le fichier manage.py),
 
 Lancer le serveur: `python manage.py runserver`
 
-Vous pouvez ensuite utiliser l'applicaton via les différents endpoints décrits dans la documentation en utilisant postman. Pour cela, vous devez d'abord créer un compte utilisateur à l'endpoint `http://127.0.0.1:8000/api/auth/user/` afin d'accéder aux fonctionnalités de l'application.
+Vous pouvez ensuite utiliser l'application via les différents endpoints décrits dans la documentation en utilisant postman. Pour cela, vous devez d'abord créer un compte utilisateur à l'endpoint `http://127.0.0.1:8000/api/auth/user/` afin d'accéder aux fonctionnalités de l'application.
