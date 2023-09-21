@@ -19,6 +19,9 @@ class Project(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True) #Horodatage
     
+    class Meta:
+        ordering = ['-id'] # Pagination = affichage par ID
+    
     def __str__(self): # Creation d'un representant en utilisant le titre (et non l'objet)
         return self.title
     
@@ -31,6 +34,7 @@ class Contributor(models.Model):
     created_time = models.DateTimeField(auto_now_add=True) #Horodatage
     class Meta:
         unique_together=("project", "user")
+        ordering = ['-id'] # Pagination = affichage par ID
         
     
 class Issue(models.Model):
@@ -64,6 +68,9 @@ class Issue(models.Model):
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
     author = models.ForeignKey(User,on_delete=models.CASCADE, related_name="author")
     
+    class Meta:
+        ordering = ['-id'] # Pagination = affichage par ID
+    
     def __str__(self): # Creation d'un representant en utilisant le titre (et non l'objet)
         return self.title
    
@@ -73,3 +80,6 @@ class Comment(models.Model):
     uid = models.CharField(max_length=100, default=str(uuid.uuid4())) # Appel uuid v4 exadecimal 32 caracteres)
     author = models.ForeignKey(User,on_delete=models.CASCADE) # Lien avec author 
     created_time = models.DateTimeField(auto_now_add=True) #Horodatage
+    
+    class Meta:
+        ordering = ['-id'] # Pagination = affichage par ID

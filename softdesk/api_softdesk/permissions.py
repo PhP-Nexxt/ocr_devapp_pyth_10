@@ -16,7 +16,6 @@ class ContributorIssuePermission(BasePermission):
     def has_permission(self, request, view):
         
         if request.method == "POST":
-            print(request.data)
             project_id = request.data.get("project")
             project = Project.objects.filter(id=project_id).first() # On récupere un projet a partir de son ID en prenant le premier éléments
             # contributors = project.contributor_set.all().values_list("user", flat=True) # On recupere tous les contributeurs associés au projet dans une liste

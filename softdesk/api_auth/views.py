@@ -20,7 +20,7 @@ class UserViewSet(viewsets.ModelViewSet): # Appel toutes les methodes
 
     def retrieve(self, request, pk=None ): #user by ID
         user = get_object_or_404(self.queryset, pk=pk)
-        if not user.can_data_be_shared and user != request.user: #exeption si pas de partage des données et utilisateur different de l'utilisateur concerné
+        if not user.can_data_be_shared and user != request.user: #exeption si pas de partage des données et utilisateur different de l'utilisateur de la cession
             raise PermissionDenied(detail="User don't share his-her data") 
         serializer = UserDetailSerializer(user)
         return Response(serializer.data)

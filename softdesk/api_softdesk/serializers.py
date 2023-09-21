@@ -12,7 +12,18 @@ class IssueSerializer(serializers.ModelSerializer):
         model = Issue
         fields = ["title","description", "assign_user", "priority", "tag", "status", "project", "author", "id", "created_time"]
         extra_kwargs = {'author': {'read_only': True}} # Mettre le champs author en lecture seule(afin que celui-ci ne puisse etre modifié via un post)
-        
+    
+    def validate(self, data): # Verifie si l'utilisateur fait partie des contributeurs
+        assign_user = data.get("assign_user")
+        project = data.get("project")
+        is_contributor = project.contributor_set.filter(user=assign_user).exists() 
+        if not is_contributor and project.author != assign_user:
+            raise serializers.ValidationError(
+                "User is not contributor to this project"
+            )
+        else:
+            return data
+
 class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributor
